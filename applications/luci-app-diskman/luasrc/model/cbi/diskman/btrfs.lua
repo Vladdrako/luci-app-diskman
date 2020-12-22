@@ -8,7 +8,7 @@ require("luci.tools.webadmin")
 local dm = require "luci.model.diskman"
 local uuid = arg[1]
 
-if not uuid then luci.http.redirect(luci.dispatcher.build_url("admin/system/diskman")) end
+if not uuid then luci.http.redirect(luci.dispatcher.build_url("admin/nas/diskman")) end
 
 -- mount subv=/ to tempfs
 mount_point = "/tmp/.btrfs_tmp"
@@ -18,7 +18,7 @@ luci.util.exec(dm.command.mount .. " -t btrfs -o subvol=/ UUID="..uuid.." "..mou
 
 m = SimpleForm("btrfs", translate("Btrfs"), translate("Manage Btrfs"))
 m.template = "diskman/cbi/xsimpleform"
-m.redirect = luci.dispatcher.build_url("admin/system/diskman")
+m.redirect = luci.dispatcher.build_url("admin/nas/diskman")
 m.submit = false
 m.reset = false
 
@@ -44,7 +44,7 @@ btn_update_label.inputstyle = "edit"
 btn_update_label.write = function(self, section, value)
   local cmd = dm.command.btrfs .. " filesystem label " .. mount_point .. " " .. value_btrfs_label
   local res = luci.util.exec(cmd)
-  luci.http.redirect(luci.dispatcher.build_url("admin/system/diskman/btrfs/" .. uuid))
+  luci.http.redirect(luci.dispatcher.build_url("admin/nas/diskman/btrfs/" .. uuid))
 end
 -- subvolume
 local subvolume_list = dm.get_btrfs_subv(mount_point)
@@ -99,7 +99,7 @@ btn_set_default.write = function(self, section, value)
   if res and (res:match("ERR") or res:match("not enough arguments")) then
     m.errmessage = res
   else
-    luci.http.redirect(luci.dispatcher.build_url("admin/system/diskman/btrfs/" .. uuid))
+    luci.http.redirect(luci.dispatcher.build_url("admin/nas/diskman/btrfs/" .. uuid))
   end
 end
 local btn_remove = table_subvolume:option(Button, "_subv_remove")
@@ -138,7 +138,7 @@ btn_remove.write = function(self, section, value)
   if res and (res:match("ERR") or res:match("not enough arguments")) then
     m.errmessage = luci.util.pcdata(res)
   else
-    luci.http.redirect(luci.dispatcher.build_url("admin/system/diskman/btrfs/" .. uuid))
+    luci.http.redirect(luci.dispatcher.build_url("admin/nas/diskman/btrfs/" .. uuid))
   end
 end
 -- snapshot
@@ -158,7 +158,7 @@ end
 --   if res and (res:match("ERR") or res:match("not enough arguments")) then
 --     m.errmessage = luci.util.pcdata(res)
 --   else
---     luci.http.redirect(luci.dispatcher.build_url("admin/system/diskman/btrfs/" .. uuid))
+--     luci.http.redirect(luci.dispatcher.build_url("admin/nas/diskman/btrfs/" .. uuid))
 --   end
 -- end
 
@@ -200,7 +200,7 @@ btn_snp_create.write = function(self, section, value)
     if res and (res:match("ERR") or res:match("not enough arguments")) then
       m.errmessage = luci.util.pcdata(res)
     else
-      luci.http.redirect(luci.dispatcher.build_url("admin/system/diskman/btrfs/" .. uuid))
+      luci.http.redirect(luci.dispatcher.build_url("admin/nas/diskman/btrfs/" .. uuid))
     end
   else
     m.errmessage = translate("Please input Source Path of snapshot, Source Path must start with '/'")
