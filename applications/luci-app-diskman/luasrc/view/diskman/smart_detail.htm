@@ -5,7 +5,7 @@
   <script type="text/javascript">//<![CDATA[
     let formData = new FormData()
     let xhr = new XMLHttpRequest()
-    xhr.open("GET", '<%=luci.dispatcher.build_url("admin", "nas", "diskman", "smartattr", dev)%>', true)
+    xhr.open("GET", '<%=luci.dispatcher.build_url("admin", "system", "diskman", "smartattr", dev)%>', true)
     xhr.onload = function () {
       let st = JSON.parse(xhr.responseText)
       let tb = document.getElementById('smart_attr_table');

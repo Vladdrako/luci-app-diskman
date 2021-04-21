@@ -6,7 +6,7 @@
     lines.forEach((item) => {
       let dev = item.id.match(/cbi-disk-(.*)/)[1]
       if (dev == "table") { return }
-      XHR.get('<%=luci.dispatcher.build_url("admin/nas/diskman/get_disk_info")%>/' + dev, null, (x, disk_info) => {
+      XHR.get('<%=luci.dispatcher.build_url("admin/system/diskman/get_disk_info")%>/' + dev, null, (x, disk_info) => {
         // handle disk info
         item.childNodes.forEach((cell) => {
           if (cell && cell.attributes) {
@@ -53,7 +53,7 @@
             let p_color = p_colors[n++]
             if (n > 4) { n = 0 }
             let inline_txt = (part.name != '-' && part.name || '') + ' ' + (part.fs != 'Free Space' && part.fs || '') + ' ' + part.size_formated + ' ' + (part.useage != '-' && part.useage || '')
-            let partiton_div = '<div title="' + inline_txt + '" style="display:inline-block; text-align:center;background-color:' + p_color + '; width:' + part_percent + '">' + inline_txt + '</div>'
+            let partiton_div = '<div title="' + inline_txt + '" style="color: #525F7F; display:inline-block; text-align:center;background-color:' + p_color + '; width:' + part_percent + '">' + inline_txt + '</div>'
             partitons_div += partiton_div
           })
           if (item.nodeName == "TR") {
@@ -71,7 +71,7 @@
       let dev = item.id.match(/cbi-_raid-(.*)/)[1]
       if (dev == "table") { return }
       console.log(dev)
-      XHR.get('<%=luci.dispatcher.build_url("admin/nas/diskman/get_disk_info")%>/' + dev, null, (x, disk_info) => {
+      XHR.get('<%=luci.dispatcher.build_url("admin/system/diskman/get_disk_info")%>/' + dev, null, (x, disk_info) => {
         // handle raid info
         item.childNodes.forEach((cell) => {
           if (cell && cell.attributes) {

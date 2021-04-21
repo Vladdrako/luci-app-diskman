@@ -9,14 +9,14 @@ local dm = require "luci.model.diskman"
 local dev = arg[1]
 
 if not dev then
-  luci.http.redirect(luci.dispatcher.build_url("admin/nas/diskman"))
+  luci.http.redirect(luci.dispatcher.build_url("admin/system/diskman"))
 elseif not nixio.fs.access("/dev/"..dev) then
-  luci.http.redirect(luci.dispatcher.build_url("admin/nas/diskman"))
+  luci.http.redirect(luci.dispatcher.build_url("admin/system/diskman"))
 end
 
 m = SimpleForm("partition", translate("Partition Management"), translate("Partition Disk over LuCI."))
 m.template = "diskman/cbi/xsimpleform"
-m.redirect = luci.dispatcher.build_url("admin/nas/diskman")
+m.redirect = luci.dispatcher.build_url("admin/system/diskman")
 m:append(Template("diskman/partition_info"))
 -- disable submit and reset button
 m.submit = false
@@ -110,7 +110,7 @@ btn_eject.write = function(self, section, value)
   else
     luci.util.exec("echo 1 > /sys/block/" .. dev .. "/device/delete")
   end
-  luci.http.redirect(luci.dispatcher.build_url("admin/nas/diskman"))
+  luci.http.redirect(luci.dispatcher.build_url("admin/system/diskman"))
 end
 -- eject: echo 1 > /sys/block/(device)/device/delete
 -- rescan: echo '- - -' | tee /sys/class/scsi_host/host*/scan > /dev/null
@@ -253,7 +253,7 @@ if not disk_info.p_table:match("Raid") then
   --   if res and res:lower():match("error+") then
   --     m.errmessage = luci.util.pcdata(res)
   --   else
-  --     luci.http.redirect(luci.dispatcher.build_url("admin/nas/diskman/partition/" .. dev))
+  --     luci.http.redirect(luci.dispatcher.build_url("admin/system/diskman/partition/" .. dev))
   --   end
   -- end
 
@@ -343,7 +343,7 @@ if not disk_info.p_table:match("Raid") then
       if res and res:lower():match("error+") then
         m.errmessage = luci.util.pcdata(res)
       else
-        luci.http.redirect(luci.dispatcher.build_url("admin/nas/diskman/partition/" .. dev))
+        luci.http.redirect(luci.dispatcher.build_url("admin/system/diskman/partition/" .. dev))
       end
     elseif value == translate("Remove") then
       -- remove partition
@@ -357,7 +357,7 @@ if not disk_info.p_table:match("Raid") then
       if res and res:lower():match("error+") then
         m.errmessage = luci.util.pcdata(res)
       else
-        luci.http.redirect(luci.dispatcher.build_url("admin/nas/diskman/partition/" .. dev))
+        luci.http.redirect(luci.dispatcher.build_url("admin/system/diskman/partition/" .. dev))
       end
     end
   end
